@@ -16,7 +16,8 @@ public class CubeController : MonoBehaviour
 {
     private Rigidbody rigidBody;
 
-    public int springConstant; // N/m
+    [SerializeField]
+    private int springConstant; // N/m
 
     private float currentTimeStep; // s
     
