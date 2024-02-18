@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using System.IO;
+using System;
 
 /*
     Accelerates the cube to which it is attached, modelling an harmonic oscillator.
@@ -20,6 +21,9 @@ public class CubeController : MonoBehaviour
     private int springConstant; // N/m
 
     private float currentTimeStep; // s
+
+    [SerializeField]
+    private float maxTime;
     
     private List<List<float>> timeSeries;
 
@@ -38,14 +42,30 @@ public class CubeController : MonoBehaviour
 
     // FixedUpdate can be called multiple times per frame
     void FixedUpdate() {
-        float forceX; // N
+        //float forceX; // N
 
         // Calculate spring force on body for x component of force vector
-        forceX = -rigidBody.position.x * springConstant;
-        rigidBody.AddForce(new Vector3(forceX, 0f, 0f));
+        //forceX = -rigidBody.position.x * springConstant;
+        //rigidBody.AddForce(new Vector3(forceX, 0f, 0f));
 
         currentTimeStep += Time.deltaTime;
-        timeSeries.Add(new List<float>() {currentTimeStep, rigidBody.position.x, rigidBody.velocity.x, forceX});
+        //if (currentTimeStep <= maxTime) {
+        //    timeSeries.Add(new List<float>() { currentTimeStep, rigidBody.position.x, rigidBody.velocity.x, forceX });
+        //}else {
+        //    print("done!");
+        //}
+
+
+        float forceZ; //N
+        // Calculate spring force on body for z component of force vector
+        forceZ = -rigidBody.position.z * springConstant;
+        rigidBody.AddForce(new Vector3(0f, 0f, forceZ));
+
+        if (currentTimeStep <= maxTime) {
+            timeSeries.Add(new List<float>() { currentTimeStep, rigidBody.position.z, rigidBody.velocity.z, forceZ });
+        } else {
+            print("done!");
+        }
     }
 
     void OnApplicationQuit() {
