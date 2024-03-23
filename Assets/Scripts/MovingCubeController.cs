@@ -12,20 +12,19 @@ public class MovingCubeController : MonoBehaviour
     private bool blowing = true;
 
     //The absolute speed of the wind blowing
-    private float windSpeed = 8f; // m/s
+    public float windSpeed = 8f; // m/s
 
     //The direction in which the wind is blowing (should have length = 1)
-    private Vector3 windDirection = new Vector3(1f, 0f, 0f);
+    public Vector3 windDirection = new Vector3(1f, 0f, 0f);
 
     //The area of one side of the cube, where the wind blows onto
-    private float sideArea = 1; // m**2
+    public float sideArea = 1; // m**2
 
     //The density of the air
-    private float airDensity = 1.229f; // kg/m**3
+    public float airDensity = 1.229f; // kg/m**3
 
-    //This number represents how efficiently the wind transfers its impulse to the cube
-    //(0 --> all the air slips past the cube | 1 --> the air transfers it impulse perfectly)
-    private float windResistance = 0.5f;
+    //This number represents how efficiently the wind transfers its impulse to the cube.
+    public float dragCoefficient = 1.2f;
 
     private float currentTimeStep; // s
     private List<List<float>> timeSeries = new List<List<float>>();
@@ -44,7 +43,7 @@ public class MovingCubeController : MonoBehaviour
         if (blowing)
         {
             float relativeWindSpeed = (windSpeed * windDirection - rigidBody.velocity).magnitude;
-            float windForce = airDensity * sideArea * Mathf.Pow(relativeWindSpeed,2) * windResistance;
+            float windForce = 0.5f * airDensity * sideArea * Mathf.Pow(relativeWindSpeed, 2) * dragCoefficient;
             rigidBody.AddForce(windDirection * windForce);
         }
 
