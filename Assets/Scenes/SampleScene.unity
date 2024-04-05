@@ -149,7 +149,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93052689}
-  m_Material: {fileID: 13400000, guid: 28d09a59b4790d943abda710cc4f9940, type: 2}
+  m_Material: {fileID: 13400000, guid: 11411100595cf4b8d901c65af468c736, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -378,7 +378,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781025506}
-  m_Material: {fileID: 13400000, guid: 28d09a59b4790d943abda710cc4f9940, type: 2}
+  m_Material: {fileID: 13400000, guid: 11411100595cf4b8d901c65af468c736, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -594,6 +594,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a5cee438bc6c84a925a353c8d5e0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  windSpeed: 8
+  airDensity: 1.229
+  dragCoefficient: 1.2
+  springLength: 1
+  springConstant: 165
 --- !u!54 &1084357638
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -628,7 +633,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084357636}
-  m_Material: {fileID: 13400000, guid: 28d09a59b4790d943abda710cc4f9940, type: 2}
+  m_Material: {fileID: 13400000, guid: 11411100595cf4b8d901c65af468c736, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
