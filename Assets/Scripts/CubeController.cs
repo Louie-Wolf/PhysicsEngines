@@ -45,7 +45,7 @@ public class CubeController : MonoBehaviour
         //float forceX; // N
 
         // Calculate spring force on body for x component of force vector
-        //forceX = -rigidBody.position.x * springConstant;
+        //forceX = -rigidBody.position.x * collisionSpringConstant;
         //rigidBody.AddForce(new Vector3(forceX, 0f, 0f));
 
         currentTimeStep += Time.deltaTime;

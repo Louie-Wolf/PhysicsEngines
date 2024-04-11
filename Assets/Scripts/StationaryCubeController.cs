@@ -32,7 +32,7 @@ public class StationaryCubeController : MonoBehaviour
 
     void WriteTimeSeriesToCSV()
     {
-        using (var streamWriter = new StreamWriter("stationaryCube_stats.csv"))
+        using (var streamWriter = new StreamWriter("Documents/Teil2/stationaryCube_stats.csv"))
         {
             streamWriter.WriteLine("t,x(t),v(t),p(t),eKin(t)");
 

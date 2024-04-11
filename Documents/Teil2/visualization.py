@@ -8,6 +8,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 
+# Time Intervalls for Graphs: -------------------------------------------------
+
+t_from_normal = 6
+t_to_normal = 18
+
+t_from_zoom = 12.3
+t_to_zoom = 13.5
+
+# -----------------------------------------------------------------------------
+
 t1 = []
 x1_t = []
 v1_t = []
@@ -53,8 +63,8 @@ plt.plot(t2, x2_t, color='b', linestyle='-', label= 'stationary Cube')
 plt.xlabel("Time [s]")
 plt.ylabel("Position [m]")
 plt.title("Position over Time")
-plt.xlim(0, 6)
-plt.ylim(-15, 15)
+plt.xlim(t_from_normal, t_to_normal)
+plt.ylim(-5, 25)
 plt.legend()
 plt.grid()
 
@@ -65,8 +75,8 @@ plt.xlabel("Time [s]")
 plt.xticks(rotation='vertical')
 plt.ylabel("Velocity [m/s]")
 plt.title("Velocity over Time")
-plt.xlim(0, 6)
-plt.ylim(-3, 6)
+plt.xlim(t_from_normal, t_to_normal)
+plt.ylim(-7, 7)
 plt.legend()
 plt.grid()
 
@@ -80,8 +90,8 @@ plt.xlabel("Time [s]")
 plt.xticks(rotation='vertical')
 plt.ylabel("Impulse [kg*m/s]")
 plt.title("Impulse over Time")
-plt.xlim(0, 6)
-plt.ylim(-20, 80)
+plt.xlim(t_from_normal, t_to_normal)
+plt.ylim(-80, 80)
 plt.legend()
 plt.grid()
 
@@ -96,8 +106,8 @@ plt.xlabel("Time [s]")
 plt.xticks(rotation='vertical')
 plt.ylabel("Energy [J]")
 plt.title("Energy over Time")
-plt.xlim(0, 6)
-plt.ylim(-3, 150)
+plt.xlim(t_from_normal, t_to_normal)
+plt.ylim(-3, 200)
 plt.legend()
 plt.grid()
 
@@ -110,7 +120,7 @@ plt.xlabel("Time [s]")
 plt.xticks(rotation='vertical')
 plt.ylabel("Energy [J]")
 plt.title("Energy over Time (Zoomed in)")
-plt.xlim(2, 4)
+plt.xlim(t_from_zoom, t_to_zoom)
 plt.ylim(-3, 150)
 plt.legend()
 plt.grid()
