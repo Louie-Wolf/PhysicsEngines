@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -10,7 +9,6 @@ public class MovingCubeController : MonoBehaviour
     private Rigidbody otherCube;
     private String nameOfOtherCube = "StationaryCube";
     private float thisCubeMass;
-    private float otherCubeMass;
 
     //The number of swings the cube does in the beginning
     public int numberOfSwings = 3;
@@ -59,7 +57,6 @@ public class MovingCubeController : MonoBehaviour
         thisCube = GetComponent<Rigidbody>();
         otherCube = GameObject.Find(nameOfOtherCube).GetComponent<Rigidbody>();
         thisCubeMass = thisCube.mass;
-        otherCubeMass = otherCube.mass;
     }
 
     // FixedUpdate can be called multiple times per frame
@@ -88,7 +85,7 @@ public class MovingCubeController : MonoBehaviour
             AddWindForce();
 
             // Update the necessary collision spring constant, assuming the current velocity is the final velocity
-            collisionSpringConstant = calcCollisionSpring();
+            collisionSpringConstant = CalcCollisionSpring();
         }
 
         // When the cubes come closer to each other, then the length of the spring, the wind stops and the collision-spring gets compressed and pushes both cubes apart.
@@ -99,7 +96,7 @@ public class MovingCubeController : MonoBehaviour
             // The wind stops blowing when the spring starts getting compressed
             blowing = false;
 
-            float compressDist = MathF.Abs(collisionSpringLength - distanceBetweenCubes); // m
+            float compressDist = Mathf.Abs(collisionSpringLength - distanceBetweenCubes); // m
             AddSpringForce(compressDist);
             springEnergy = 0.5f * collisionSpringConstant * Mathf.Pow(compressDist, 2);
         }
@@ -149,8 +146,8 @@ public class MovingCubeController : MonoBehaviour
     {
         float springForce = -(compressDist * collisionSpringConstant); // N
 
-        thisCube.AddForce(windDirection * springForce);
-        otherCube.AddForce((-windDirection) * springForce);
+        thisCube.AddForce(new Vector3(springForce, 0, 0));
+        otherCube.AddForce(new Vector3(-springForce, 0, 0));
     }
 
     private void WriteTimeSeriesToCSV()
@@ -167,7 +164,7 @@ public class MovingCubeController : MonoBehaviour
         }
     }
 
-    private float calcCollisionSpring()
+    private float CalcCollisionSpring()
     {
         //Current kinetic energy of this cube
         float eKin = 0.5f * thisCubeMass * Mathf.Pow(thisCube.velocity.x, 2); // J
