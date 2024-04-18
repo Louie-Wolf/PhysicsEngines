@@ -34,12 +34,6 @@ public class CubeController : MonoBehaviour
         timeSeries = new List<List<float>>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     // FixedUpdate can be called multiple times per frame
     void FixedUpdate() {
         //float forceX; // N

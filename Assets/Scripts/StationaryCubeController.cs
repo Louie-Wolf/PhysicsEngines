@@ -1,14 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 public class StationaryCubeController : MonoBehaviour
 {
-    private Rigidbody rigidBody;
+    Rigidbody rigidBody;
 
-    private float currentTimeStep; // s
-    private List<List<float>> timeSeries = new List<List<float>>();
+    float currentTimeStep; // s
+    readonly List<List<float>> timeSeries = new();
 
     // Start is called before the first frame update
     void Start()
@@ -16,10 +15,9 @@ public class StationaryCubeController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    // FixedUpdate can be called multiple times per frame
     void FixedUpdate()
     {
-        currentTimeStep += Time.deltaTime;
+        currentTimeStep += Time.fixedDeltaTime;
         float impulse = rigidBody.mass * rigidBody.velocity.x; // kg * m/s
         float kinEnergy = 0.5f * rigidBody.mass * Mathf.Pow(rigidBody.velocity.x, 2); // J
         timeSeries.Add(new List<float>() { currentTimeStep, rigidBody.position.x, rigidBody.velocity.x, impulse, kinEnergy });

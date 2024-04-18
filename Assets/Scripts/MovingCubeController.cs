@@ -1,55 +1,60 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 public class MovingCubeController : MonoBehaviour
 {
-    private Rigidbody thisCube;
-    private Rigidbody otherCube;
-    private String nameOfOtherCube = "StationaryCube";
-    private float thisCubeMass;
-
-    //The number of swings the cube does in the beginning
-    public int numberOfSwings = 3;
-
-    //Counts the number of swings that this cube has done
-    private double swingCounter = 0;
-
-    //The velocity measured in the last calculation step
-    private float previousVelocity = 0f;
-
-    //Is the wind still blowing?
-    private bool blowing = false;
-
-    //The absolute speed of the wind blowing
-    public float windSpeed = 8f; // m/s
-
-    //The direction in which the wind is blowing (should have length = 1)
-    private Vector3 windDirection = new Vector3(1f, 0f, 0f);
-
-    //The length of one side of the cube
-    private float sideLength = 1; // m
-
     //The density of the air
-    public float airDensity = 1.229f; // kg/m**3
+    [SerializeField]
+    float airDensity = 1.229f; // kg/m**3
 
     //This number represents how efficiently the wind transfers its impulse to the cube.
-    public float dragCoefficient = 1.2f;
+    [SerializeField]
+    float dragCoefficient = 1.2f;
 
     //The length of the spring used to simulate the collision.
-    public float collisionSpringLength = 1f; // m
+    [SerializeField]
+    float collisionSpringLength = 1f; // m
 
     //The amount of force needed to compress the oscillation spring by a certain distance.
-    public float oscillationSpringConstant = 40f; // N/m
+    [SerializeField]
+    float oscillationSpringConstant = 40f; // N/m
+
+    //The number of swings the cube does in the beginning
+    [SerializeField]
+    float numberOfSwings = 3.0f;
+
+    //Counts the amount of swings that this cube has done
+    float swingCounter = 0.0f;
+
+    //The velocity measured in the last calculation step
+    float previousVelocity = 0f;
+
+    //Is the wind still blowing?
+    bool blowing = false;
+
+    //The absolute speed of the wind blowing
+    [SerializeField]
+    float windSpeed = 8f; // m/s
+
+    //The direction in which the wind is blowing (should have length = 1)
+    Vector3 windDirection = new (1f, 0f, 0f);
+
+    //The length of one side of the cube
+    readonly float sideLength = 1; // m
 
     //The amount of force needed to compress the collision spring by a certain distance.
-    private float collisionSpringConstant = 0f; // N/m
+    float collisionSpringConstant = 0f; // N/m
 
-    private float currentTimeStep; // s
-    private List<List<float>> timeSeries = new List<List<float>>();
+    //Mass of this cube
+    float thisCubeMass;
 
-
+    float currentTimeStep; // s
+    readonly List<List<float>> timeSeries = new();
+    Rigidbody thisCube;
+    Rigidbody otherCube;
+    readonly string nameOfOtherCube = "StationaryCube";
+    
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +64,6 @@ public class MovingCubeController : MonoBehaviour
         thisCubeMass = thisCube.mass;
     }
 
-    // FixedUpdate can be called multiple times per frame
     void FixedUpdate()
     {
         // Do the harmonic oscillation for the desired number of swings and then start the wind
@@ -69,7 +73,7 @@ public class MovingCubeController : MonoBehaviour
             // If the cube changes direction, the swing counter is incremented by half a swing
             if (previousVelocity * thisCube.velocity.x < 0)
             {
-                swingCounter += 0.5;
+                swingCounter += 0.5f;
             }
 
             // Start the wind when the desired number of swings has been reached
@@ -102,7 +106,7 @@ public class MovingCubeController : MonoBehaviour
         }
 
         // Adds the data to the list, so it can be written into the csv file later
-        currentTimeStep += Time.deltaTime;
+        currentTimeStep += Time.fixedDeltaTime;
         float impulse = thisCube.mass * thisCube.velocity.x; // kg * m/s
         float kinEnergy = 0.5f * thisCube.mass * Mathf.Pow(thisCube.velocity.x, 2); // J
         timeSeries.Add(new List<float>() { currentTimeStep, thisCube.position.x, thisCube.velocity.x, impulse, kinEnergy, springEnergy });
@@ -116,7 +120,7 @@ public class MovingCubeController : MonoBehaviour
         GameObject target = collision.gameObject;
         if (target.name == nameOfOtherCube)
         {
-            Debug.Log("The spring force is to small. The cubes have collided");
+            Debug.LogWarning("The spring force is to small. The cubes have collided!");
         }
     }
 
@@ -124,8 +128,6 @@ public class MovingCubeController : MonoBehaviour
     {
         WriteTimeSeriesToCSV();
     }
-
-
 
     // Oscillates the cube around x = 0
     private void DoHarmonicOscillation()
