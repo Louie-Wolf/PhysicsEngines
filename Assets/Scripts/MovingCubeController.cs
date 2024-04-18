@@ -130,9 +130,9 @@ public class MovingCubeController : MonoBehaviour
     // Oscillates the cube around x = 0
     private void DoHarmonicOscillation()
     {
-        // Calculate spring force on body for x component of force vector
-        float forceX = -thisCube.position.x * oscillationSpringConstant;
-        thisCube.AddForce(new Vector3(forceX, 0f, 0f));
+        float strainDistance = thisCube.position.x; // because the cube oscillates around x=0
+        float springForce = -(strainDistance * oscillationSpringConstant);   // N
+        thisCube.AddForce(new Vector3(springForce, 0f, 0f));
     }
 
     private void AddWindForce() 
