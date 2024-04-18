@@ -24,6 +24,10 @@ public class MovingCubeController : MonoBehaviour
     [SerializeField]
     float numberOfSwings = 3.0f;
 
+    //The absolute speed of the wind blowing
+    [SerializeField]
+    float windSpeed = 8f; // m/s
+
     //Counts the amount of swings that this cube has done
     float swingCounter = 0.0f;
 
@@ -32,10 +36,6 @@ public class MovingCubeController : MonoBehaviour
 
     //Is the wind still blowing?
     bool blowing = false;
-
-    //The absolute speed of the wind blowing
-    [SerializeField]
-    float windSpeed = 8f; // m/s
 
     //The direction in which the wind is blowing (should have length = 1)
     Vector3 windDirection = new (1f, 0f, 0f);
