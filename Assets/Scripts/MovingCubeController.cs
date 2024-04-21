@@ -92,7 +92,7 @@ public class MovingCubeController : MonoBehaviour
             collisionSpringConstant = CalcCollisionSpring();
         }
 
-        // When the cubes come closer to each other, then the length of the spring, the wind stops and the collision-spring gets compressed and pushes both cubes apart.
+        // As the cubes come closer together than the length of the spring, the wind stops and the collision spring compresses, pushing the two cubes apart.
         float distanceBetweenCubes = Mathf.Abs((thisCube.position.x + 0.5f * sideLength) - (otherCube.position.x - 0.5f * sideLength));
         float springEnergy = 0; // J
         if (distanceBetweenCubes < collisionSpringLength)
