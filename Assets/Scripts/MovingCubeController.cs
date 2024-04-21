@@ -54,9 +54,10 @@ public class MovingCubeController : MonoBehaviour
     Rigidbody thisCube;
     Rigidbody otherCube;
     readonly string nameOfOtherCube = "StationaryCube";
-    
 
-    // Start is called before the first frame update
+    float velocityRedCubeBefore = 0f;
+    float currentSpringForce = 0f;
+
     void Start()
     {
         thisCube = GetComponent<Rigidbody>();
@@ -69,7 +70,7 @@ public class MovingCubeController : MonoBehaviour
         // Do the harmonic oscillation for the desired number of swings and then start the wind
         if (swingCounter < numberOfSwings)
         {
-            DoHarmonicOscillation();
+            currentSpringForce = DoHarmonicOscillation();
             // If the cube changes direction, the swing counter is incremented by half a swing
             if (previousVelocity * thisCube.velocity.x < 0)
             {
@@ -107,9 +108,11 @@ public class MovingCubeController : MonoBehaviour
 
         // Adds the data to the list, so it can be written into the csv file later
         currentTimeStep += Time.fixedDeltaTime;
+        float accelerationRedCube =  (thisCube.velocity.x - velocityRedCubeBefore) / Time.fixedDeltaTime;
+        velocityRedCubeBefore = thisCube.velocity.x;
         float impulse = thisCube.mass * thisCube.velocity.x; // kg * m/s
         float kinEnergy = 0.5f * thisCube.mass * Mathf.Pow(thisCube.velocity.x, 2); // J
-        timeSeries.Add(new List<float>() { currentTimeStep, thisCube.position.x, thisCube.velocity.x, impulse, kinEnergy, springEnergy });
+        timeSeries.Add(new List<float>() { currentTimeStep, thisCube.position.x, thisCube.velocity.x, impulse, kinEnergy, springEnergy, accelerationRedCube, currentSpringForce });
 
         previousVelocity = thisCube.velocity.x;
     }
@@ -130,11 +133,12 @@ public class MovingCubeController : MonoBehaviour
     }
 
     // Oscillates the cube around x = 0
-    private void DoHarmonicOscillation()
+    private float DoHarmonicOscillation()
     {
         float strainDistance = thisCube.position.x; // because the cube oscillates around x=0
         float springForce = -(strainDistance * oscillationSpringConstant);   // N
         thisCube.AddForce(new Vector3(springForce, 0f, 0f));
+        return springForce;
     }
 
     private void AddWindForce() 
@@ -156,7 +160,7 @@ public class MovingCubeController : MonoBehaviour
     {
         using (var streamWriter = new StreamWriter("Documents/Teil2/movingCube_stats.csv"))
         {
-            streamWriter.WriteLine("t,x(t),v(t),p(t),eKin(t),eSpr(t)");
+            streamWriter.WriteLine("t,x(t),v(t),p(t),eKin(t),eSpr(t), a(t), F_Feder(t)");
 
             foreach (List<float> timeStep in timeSeries)
             {
