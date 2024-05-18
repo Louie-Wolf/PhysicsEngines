@@ -154,7 +154,7 @@ public class MovingCubeController : MonoBehaviour
 
     private void WriteTimeSeriesToCSV()
     {
-        using (var streamWriter = new StreamWriter("Documents/Teil2/movingCube_stats.csv"))
+        using (var streamWriter = new StreamWriter("Documents/Teil3/movingCube_stats.csv"))
         {
             streamWriter.WriteLine("t,x(t),v(t),p(t),eKin(t),eSpr(t)");
 
