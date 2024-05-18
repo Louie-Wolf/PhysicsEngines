@@ -138,6 +138,11 @@ public class StationaryCubeController : MonoBehaviour
     //Called when a collision is registered
     void OnCollisionEnter(Collision collision)
     {
+        if (isJoined)
+        {
+            // We only want to create a new joint the first time the cubes collide
+            return;
+        }
         GameObject target = collision.gameObject;
 
         // if the blue cube touches something other than the ground, a fixed joint is added connecting the two bodies

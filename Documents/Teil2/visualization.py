@@ -21,8 +21,10 @@ t_to_zoom = 13.5
 t1 = []
 x1_t = []
 v1_t = []
+a1_t = []
 p1_t = []
 eKin1_t = []
+fFeder_t = []
 
 t2 = []
 x2_t = []
@@ -44,6 +46,8 @@ with open('movingCube_stats.csv', 'r') as csvfile1:
         p1_t.append(float(row[3]))
         eKin1_t.append(float(row[4]))
         eSpr_t.append(float(row[5]))
+        a1_t.append(float(row[6]))
+        fFeder_t.append((float(row[7])))
 
 with open('stationaryCube_stats.csv', 'r') as csvfile2:
     # Überspringe die Header-Zeile
@@ -57,18 +61,41 @@ with open('stationaryCube_stats.csv', 'r') as csvfile2:
         p2_t.append(float(row[3]))
         eKin2_t.append(float(row[4]))
 
+plt.figure(0)
+plt.plot(t1, fFeder_t, color='r', linestyle='-', label= 'moving Cube')
+plt.xlabel("Time [s]")
+plt.ylabel("Spring Force [N]")
+plt.title("Spring Force over Time in x-Axis")
+plt.xlim(0, 9.4)
+plt.ylim(-140, 140)
+plt.yticks(range(-140, 141, 20))
+plt.legend()
+plt.grid()
+
+
 plt.figure(1)
+plt.plot(t1, a1_t, color='r', linestyle='-', label= 'moving Cube')
+plt.xlabel("Time [s]")
+plt.ylabel(r"Acceleration [m/s$^2$]")
+plt.title("Acceleration over Time in x-Axis")
+plt.xlim(0, 9.4)
+plt.ylim(-14, 14)
+plt.yticks(range(-14, 15, 2))
+plt.legend()
+plt.grid()
+
+plt.figure(2)
 plt.plot(t1, x1_t, color='r', linestyle='-', label= 'moving Cube')
 plt.plot(t2, x2_t, color='b', linestyle='-', label= 'stationary Cube')
 plt.xlabel("Time [s]")
 plt.ylabel("Position [m]")
-plt.title("Position over Time")
+plt.title("Position over Time in x-Axis")
 plt.xlim(t_from_normal, t_to_normal)
 plt.ylim(-5, 25)
 plt.legend()
 plt.grid()
 
-plt.figure(2)
+plt.figure(3)
 plt.plot(t1, v1_t, color='r', linestyle='-', label= 'moving Cube')
 plt.plot(t2, v2_t, color='b', linestyle='-', label= 'stationary Cube')
 plt.xlabel("Time [s]")
@@ -82,7 +109,7 @@ plt.grid()
 
 totalImpulse = np.array(p1_t) + np.array(p2_t)
 
-plt.figure(3)
+plt.figure(4)
 plt.plot(t1, totalImpulse, color='black', linestyle='-', label= 'total')
 plt.plot(t1, p1_t, color='r', linestyle='-', label= 'moving Cube')
 plt.plot(t2, p2_t, color='b', linestyle='-', label= 'stationary Cube')
@@ -97,7 +124,7 @@ plt.grid()
 
 totalEnergy = np.array(eKin1_t) + np.array(eKin2_t) + np.array(eSpr_t)
 
-plt.figure(4)
+plt.figure(5)
 plt.plot(t1, totalEnergy, color='black', linestyle='-', label= 'total')
 plt.plot(t1, eKin1_t, color='r', linestyle='-', label= 'moving Cube')
 plt.plot(t2, eKin2_t, color='b', linestyle='-', label= 'stationary Cube')
@@ -111,7 +138,7 @@ plt.ylim(-3, 200)
 plt.legend()
 plt.grid()
 
-plt.figure(5)
+plt.figure(6)
 plt.plot(t1, totalEnergy, color='black', linestyle='-', label= 'total')
 plt.plot(t1, eKin1_t, color='r', linestyle='-', label= 'moving Cube')
 plt.plot(t2, eKin2_t, color='b', linestyle='-', label= 'stationary Cube')
