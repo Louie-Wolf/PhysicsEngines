@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraControler : MonoBehaviour
 {
-    Rigidbody camera;
-    private Rigidbody blueCube;
+    Transform blueCubeTF;
     StationaryCubeController blueCubeScript;
 
-    // Start is called before the first frame update
     void Start()
     {
-        camera = GetComponent<Rigidbody>();
-        blueCube = GameObject.Find("StationaryCube").GetComponent<Rigidbody>();
-        blueCubeScript = GameObject.Find("StationaryCube").GetComponent<StationaryCubeController>();
+        GameObject blueCube = GameObject.Find("StationaryCube");
+        blueCubeTF = blueCube.transform;
+        blueCubeScript = blueCube.GetComponent<StationaryCubeController>();
     }
 
     void FixedUpdate()
@@ -21,13 +17,12 @@ public class CameraControler : MonoBehaviour
         float newXCord;
         if (blueCubeScript.isJoined)
         {
-            newXCord = blueCubeScript.centerOfMassCombBody.x - 1;
-            camera.MovePosition(new Vector3(newXCord, camera.position.y, camera.position.z));
+            newXCord = blueCubeScript.centerOfMassCombBody.x - 1f;
         }
         else
         {
-            newXCord = blueCube.position.x;
+            newXCord = blueCubeTF.position.x;
         }
-        camera.MovePosition(new Vector3(newXCord, camera.position.y, camera.position.z));
+        transform.Translate(new Vector3(newXCord - transform.position.x, 0f, 0f));
     }
 }

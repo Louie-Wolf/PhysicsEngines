@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
 using System.IO;
-using System;
 
 /*
     Accelerates the cube to which it is attached, modelling an harmonic oscillator.
