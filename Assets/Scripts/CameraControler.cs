@@ -15,7 +15,7 @@ public class CameraControler : MonoBehaviour
     void FixedUpdate()
     {
         float newXCord;
-        if (blueCubeScript.isJoined)
+        if (blueCubeScript.isJoint)
         {
             newXCord = blueCubeScript.centerOfMassCombBody.x - 1f;
         }

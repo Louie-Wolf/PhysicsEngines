@@ -24,7 +24,7 @@ public class StationaryCubeController : MonoBehaviour
     float angle = 0f; // rad
     float previousAngle = 0f; // rad
     float angularVelocity = 0f;  // rad / s
-    float momentOfInertia = 0f;  // kg * m^2
+    float momentOfInertia;  // kg * m^2
     float intrinsicAngularMomentum = 0f;  // kg * m^2 / s
     float orbitalAngularMomentum = 0f;   // kg * m^2 / s
     float totalAngularMomentum = 0f; // kg * m^2 / s
@@ -38,7 +38,7 @@ public class StationaryCubeController : MonoBehaviour
 
     // reference used in the camera controller
     [HideInInspector]
-    public bool isJoined = false;
+    public bool isJoint = false;
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +60,7 @@ public class StationaryCubeController : MonoBehaviour
         Vector3 posLCube2 = LCube2.position; // m
         Vector3 posLCube3 = LCube3.position; // m
 
-        if (isJoined)
+        if (isJoint)
         {
 
             // the center of mass of a combined body is the mean of the positional vectors of its parts weighted by mass:
@@ -99,7 +99,7 @@ public class StationaryCubeController : MonoBehaviour
             // moment of inertia J
             momentOfInertia = (1f / 6f * thisCube.mass) + (thisCube.mass * Mathf.Pow(posRelThisCube.magnitude, 2f))
                               + (1f / 6f * LCube1.mass) + (LCube1.mass * Mathf.Pow(posRelLCube1.magnitude, 2f))
-                              + (1f / 6f * LCube2.mass) +( LCube2.mass * Mathf.Pow(posRelLCube2.magnitude, 2f))
+                              + (1f / 6f * LCube2.mass) + (LCube2.mass * Mathf.Pow(posRelLCube2.magnitude, 2f))
                               + (1f / 6f * LCube3.mass) + (LCube3.mass * Mathf.Pow(posRelLCube3.magnitude, 2f)); // kg * m^2
 
             // intrinsic angular momentum L_intri
@@ -135,7 +135,7 @@ public class StationaryCubeController : MonoBehaviour
     //Called when a collision is registered
     void OnCollisionEnter(Collision collision)
     {
-        if (isJoined) // only create a new joint the first time the cubes collide
+        if (isJoint) // only create a new joint the first time the cubes collide
         {
             return;
         }
@@ -144,7 +144,7 @@ public class StationaryCubeController : MonoBehaviour
         // if the blue cube touches something other than the ground, a fixed joint is added connecting the two bodies
         if (target.name != nameOfGround)
         {
-            isJoined = true;
+            isJoint = true;
             FixedJoint joint = gameObject.AddComponent<FixedJoint>();
             joint.connectedBody = target.GetComponent<Rigidbody>();
         }
@@ -157,8 +157,19 @@ public class StationaryCubeController : MonoBehaviour
 
     private float CalculateRotationAngle(Vector3 radius) 
     {
-        // returns the angle between the radius-vector and the z-Axis
-        return Mathf.Atan2(-radius.x, radius.z) + Mathf.PI;
+        radius = radius.normalized;
+        float cos = radius.x;
+        float sin = radius.z;
+
+        if (sin > 0f) {
+            // if the radius is in the upper half of the unit circle:
+            return Mathf.Acos(cos);
+        } else {
+            // if the radius is in the lower half of the unit circle:
+            return 2f * Mathf.PI - Mathf.Acos(cos);
+        }
+        //// returns the angle between the radius-vector and the z-Axis
+        //return Mathf.Atan2(-radius.x, radius.z) + Mathf.PI;
     }
 
     private void WriteTimeSeriesToCSV()
